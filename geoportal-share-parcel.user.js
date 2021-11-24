@@ -2,7 +2,7 @@
 // @name         GeoportalShareParcel
 // @namespace    http://geoportal.gov.pl/
 // @source       https://github.com/piotrgredowski/geoportal-share-parcel
-// @version      0.1
+// @version      0.2
 // @description  Script which shows copyable link to selected parcel in header of table with parcel info
 // @description:pl Skrypt dodający kopiowalny link do wybranej działki w nagłówku tabeli z informacjami na temat działki
 // @author       Piotr Grędowski
@@ -14,8 +14,6 @@
 // ==/UserScript==
 
 const getParcelId = (parcelElement) => {
-  const elem = document.querySelector('#infoPopup');
-  const results = document.querySelector('.ident-results');
   const item = document.querySelector('.htmlListItem');
   try {
     const parcelElement = item.getElementsByTagName('b')[0];
@@ -29,10 +27,12 @@ const getParcelUrl = (parcelId) => {
   return `https://mapy.geoportal.gov.pl/imap/Imgp_2.html?identifyParcel=${parcelId}`;
 };
 
+const wholeNewElementId = 'geoportal-share-link'
 const anchorId = 'anchor-from-geoportal-share';
 
 const createParcelLinkElement = (url) => {
   const container = document.createElement('span');
+  container.id = wholeNewElementId;
   const anchor = document.createElement('a');
   anchor.href = url;
   anchor.id = anchorId;
@@ -56,13 +56,26 @@ const addParcelLinkToTable = (anchor) => {
   tr.prepend(td);
 };
 
+const removeElement = (element) => {
+  element.parentElement.removeChild(element);
+}
+
 (function () {
   'use strict';
 
+  let lastParcelId;
+
+
   const func = () => {
     const parcelId = getParcelId();
+
     if (!parcelId) return;
-    if (document.getElementById(anchorId)) return;
+    if (parcelId === lastParcelId) return;
+
+    const parcelLinkElement = document.getElementById(wholeNewElementId);
+    removeElement(parcelLinkElement);
+
+    lastParcelId = parcelId;
     const url = getParcelUrl(parcelId);
     const parcelLinkElement = createParcelLinkElement(url);
     addParcelLinkToTable(parcelLinkElement);
