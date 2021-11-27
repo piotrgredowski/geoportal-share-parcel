@@ -2,7 +2,7 @@
 // @name         GeoportalShareParcel
 // @namespace    http://geoportal.gov.pl/
 // @source       https://github.com/piotrgredowski/geoportal-share-parcel
-// @version      0.2
+// @version      0.3.0
 // @description  Script which shows copyable link to selected parcel in header of table with parcel info
 // @description:pl Skrypt dodający kopiowalny link do wybranej działki w nagłówku tabeli z informacjami na temat działki
 // @author       Piotr Grędowski
@@ -72,13 +72,15 @@ const removeElement = (element) => {
     if (!parcelId) return;
     if (parcelId === lastParcelId) return;
 
-    const parcelLinkElement = document.getElementById(wholeNewElementId);
-    removeElement(parcelLinkElement);
+    const oldParcelLinkElement = document.getElementById(wholeNewElementId);
+    if (oldParcelLinkElement) {
+      removeElement(oldParcelLinkElement);
+    }
 
     lastParcelId = parcelId;
     const url = getParcelUrl(parcelId);
-    const parcelLinkElement = createParcelLinkElement(url);
-    addParcelLinkToTable(parcelLinkElement);
+    const newParcelLinkElement = createParcelLinkElement(url);
+    addParcelLinkToTable(newParcelLinkElement);
   };
 
   setInterval(func, 100);

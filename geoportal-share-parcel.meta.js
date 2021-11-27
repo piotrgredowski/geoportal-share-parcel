@@ -2,7 +2,7 @@
 // @name         GeoportalShareParcel
 // @namespace    http://geoportal.gov.pl/
 // @source       https://github.com/piotrgredowski/geoportal-share-parcel
-// @version      0.2
+// @version      0.3.0
 // @description  Script which shows copyable link to selected parcel in header of table with parcel info
 // @description:pl Skrypt dodający kopiowalny link do wybranej działki w nagłówku tabeli z informacjami na temat działki
 // @author       Piotr Grędowski
